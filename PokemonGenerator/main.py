@@ -49,6 +49,11 @@ def GeneratePokemon():
         typing = RegularTypes()
         x_factor = RegularX()
         RevealPseudoPokemon(power, evolutions, typing, x_factor)
+    elif power == "mythical":
+        evolutions = MythicEvos()
+        typing = RegularTypes()
+        x_factor = LegendX()
+        RevealMythicPokemon(power, evolutions, typing, x_factor)
     else:
         print(f"You are a {power} pokemon! That's not implemented yet. Womp Womp.")
         
@@ -125,11 +130,17 @@ def LegendX():
 def StarterTypes():
     return random.choice(pokemon_lists.starter_types)
 
+
 def StarterSecondTypes():
     return random.choice(pokemon_lists.sec_types)
 
+
 def PseduoEvos():
     return random.choice(pokemon_lists.reg_evolutions, p=[0.01, 0.01, 0.96, 0.02])
+
+
+def MythicEvos():
+    return random.choice(pokemon_lists.reg_evolutions, p=[0.94, 0.02, 0.02, 0.02])
 
 
 def RevealRegularPokemon(power, evolutions, typing, x_factor):
@@ -308,9 +319,9 @@ def RevealLegendPokemon(power, evolutions, typing, x_factor):
             dual_typing = True
 
     print(f"You got a {power} pokemon! That's awesome!")
-    print(f"Usually legendary pokemon don't evolve...")
+    print("Usually legendary pokemon don't evolve...")
     if is_split == True:
-        print(f"But wow, it looks like your legendary has a split evolution line! That means it can evolve into different pokemon depending on certain things such as gender, evolution stone exposure, or even time of day. How Rare!")
+        print("But wow, it looks like your legendary has a split evolution line! That means it can evolve into different pokemon depending on certain things such as gender, evolution stone exposure, or even time of day. How Rare!")
     elif is_base == True:
         print("...And it looks like you don't, either.")
     else:
@@ -420,5 +431,62 @@ def RevealPseudoPokemon(power, evolutions, typing, x_factor):
     print("Welcome to the world!")
     return
 
+def RevealMythicPokemon(power, evolutions, typing, x_factor):
+    stage = ""
+    is_split = False
+    is_base = False
+
+    if evolutions == 0:
+        stage = "base"
+        is_base = True
+    elif evolutions == 1:
+        stage = "two-stage"
+    elif evolutions == 2:
+        stage = "full three-stage"
+    else:
+        stage = "split evolution"
+        is_split = True
+
+    type_1 = typing[0]
+    type_2 = typing[1]
+    womp_womp = False
+    pure_typing = False
+    dual_typing = False
+
+    if (type_1 == "None") or (type_2 == "None"):
+        if type_1 == type_2:
+            womp_womp = True
+        else:
+            pure_typing = True
+    else:
+        if type_1 == type_2:
+            pure_typing = True
+        else:
+            dual_typing = True
+
+    print(f"You got a {power} pokemon! Incredible, that's extremely rare!")
+    print(f"Most mythic pokemon don't evolve, but there's a small chance of something different...")
+    if is_split == True:
+        print(f"Wow, your pokemon has a split evolution line! That means it can evolve into different pokemon depending on certain things such as gender, evolution stone exposure, or even time of day. How Rare!")
+    elif stage == "base":
+        print("And it looks like you don't have any evolutions, just like the other mythicals. That's cool!")
+    else:
+        print(f"Your pokemon can evolve {evolutions} time(s), making it a {stage} pokemon. How Rare!")
+
+    print(f"Your first type is {type_1}, and your second type is {type_2}.")
+    if dual_typing == True:
+        print(f"This makes you a {type_1}/{type_2} dual-type pokemon. Cool!")
+    elif pure_typing == True:
+        if type_1 == "None":
+            type_1 = type_2
+        print(f"This makes you a pure {type_1} type pokemon!")
+    else:
+        print("...Huh. You have no type. Weird.") 
+        print("There is only a %0.25 chance of that, here!")
+        print("I guess you're a pokemon with some serious involvement in the plot of the game, especially as a mythical pokemon!")
+        print("Go forth, you unlikely creature, you!")
+
+    print("Welcome to the world!")
+    return
 
 GeneratePokemon()
